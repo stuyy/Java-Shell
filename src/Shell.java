@@ -1,29 +1,23 @@
 import java.io.*;
 import java.util.*;
 import java.util.Calendar;
-
+import ext.anson.LinkedList;
 public class Shell implements ListSegments{
 	
-	private String currWorkingDir;
-	private String prevWorkingDir;
-	public ArrayList<String> dir = new ArrayList();
+	
+	LinkedList dirList = new LinkedList();
 	
 	public Shell()
 	{
-		this.currWorkingDir = "C:\\Users\\Anson";
-		this.prevWorkingDir = "C:\\Users";
-		dir.add("C:");
-		dir.add("Users");
-		dir.add("Anson");
-		System.out.println("Currently in: " + dir.get(0) + "/" + dir.get(1) + "/" + dir.get(2));
 		
 	}
 	@Override
 	public void listDirectoryFiles()
 	{
+		
 		Calendar cal = Calendar.getInstance();
 		
-		File folder = new File(this.currWorkingDir);
+		File folder = new File(this.dirList.buildPath());
 		File [] files = folder.listFiles();
 		for(int i = 0; i < files.length; i++)
 		{
@@ -44,12 +38,7 @@ public class Shell implements ListSegments{
 	public void listDirectoryFiles(String dir)
 	{
 		String args [] = dir.split("/");
-		int l = 0;
-		/*
-		while(l < args.length)
-		{
-			System.out.println(args[l++]);
-		}*/
+		
 		if(args[0].equals("~"))
 		{
 			int j = 1;
@@ -84,16 +73,6 @@ public class Shell implements ListSegments{
 			listDirectoryFiles();
 		}
 			
-	}
-	public void setDir(String dir)
-	{
-		this.prevWorkingDir = currWorkingDir;
-		this.currWorkingDir = "C:\\Users\\Anson\\" + dir;
-		
-	}
-	public String getCWD()
-	{
-		return this.currWorkingDir;
 	}
 	
 }

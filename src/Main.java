@@ -5,6 +5,7 @@ public class Main {
 	{
 		Shell shell = new Shell();
 		Scanner key = new Scanner(System.in);
+		ShellArgModifier modify = new ShellArgModifier();
 		String commandInput;
 		boolean running = true;
 		while(running)
@@ -18,14 +19,15 @@ public class Main {
 			else if(commandInput.startsWith("ls"))
 			{
 				if(commandInput.equals("ls"))
-				{
+				{	
+					
 					shell.listDirectoryFiles();
 				}
 				else
 				{
 					String command = new String(commandInput.substring(0, 2));
 					String path = new String(commandInput.substring(3));
-					path = WordModifier.removeSpaces(path);
+					path = modify.removeSpaces(path);
 					shell.listDirectoryFiles(path);
 				}
 			}
@@ -41,12 +43,10 @@ public class Main {
 					String dir = new String(commandInput.substring(3));
 					System.setProperty("user.dir", dir);
 					String newDir = System.getProperty("user.dir");
-					shell.setDir(newDir);
 				}
 			}
 			else if(commandInput.startsWith("pwd"))
 			{
-				System.out.println(shell.getCWD());
 			}
 		}
 		

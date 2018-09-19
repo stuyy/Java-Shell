@@ -2,7 +2,7 @@ package ext.anson;
 
 public class LinkedList {
 	
-	Node root;
+	Node root = new Node("C:");
 	
 	public LinkedList()
 	{
@@ -23,16 +23,16 @@ public class LinkedList {
 			temp = temp.next;
 		}
 	}
-	public StringBuilder buildPath()
+	public String buildPath()
 	{
 		StringBuilder pathName = new StringBuilder();
 		Node temp = root;
 		while(temp != null)
 		{
-			pathName.append(temp.data + "//");
+			pathName.append(temp.data + "\\");
 			temp = temp.next;
 		}
-		return pathName;
+		return pathName.toString();
 	}
 	public void addNode(String data)
 	{
@@ -46,18 +46,27 @@ public class LinkedList {
 				temp = temp.next;
 			}
 			temp.next = new Node(data);
+			temp.next.prev = temp;
 		}
 	}
 	
-	public static void main(String[] args)
+	public void popNode()
 	{
-		LinkedList list = new LinkedList();
-		list.addNode("C:");
-		list.addNode("Users");
-		list.addNode("Anson");
-		list.printList();
-		System.out.println(list.buildPath().toString());
+		// Remove the last node. This happens every time we do "cd .. to go back one directory"
+		Node temp = root;
+		while(temp.next != null)
+		{
+			temp = temp.next;
+		}
+		// If temp.next is null and no iteration occurs, then we are at the main C: root, which we should not delete.
+		// We're at the end. Remove the node.
+		if(temp.data.equals(root.data))
+			return;
+		temp.prev.next = null;
+		temp.prev = null;
+		temp = null;
 	}
+	
 }
 
 class Node 
@@ -73,7 +82,6 @@ class Node
 	public Node(String data)
 	{
 		this.data = new String(data);
-		this.next = this.prev = null;
 	}
 	
 }

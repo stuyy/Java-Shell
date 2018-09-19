@@ -1,7 +1,7 @@
 package ext.anson;
 
-public class WordModifier {
-	public static String removeSpaces(String str)
+public class ShellArgModifier {
+	public String removeSpaces(String str)
 	{
 		String newPath = "";
 		int i = 0;
