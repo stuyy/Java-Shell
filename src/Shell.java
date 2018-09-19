@@ -2,9 +2,11 @@ import java.io.*;
 import java.util.*;
 import java.util.Calendar;
 import ext.anson.LinkedList;
-public class Shell implements ListSegments{
+public class Shell implements ListSegments, ChangeDirectory {
 	
 	String currDir;
+	private String currentWorkingDirectory;
+	
 	LinkedList dirList = new LinkedList();
 	
 	public Shell()
@@ -12,12 +14,45 @@ public class Shell implements ListSegments{
 		
 	}
 	@Override
-	public void listDirectoryFiles()
+	public void changeDirectory(String dirName)
 	{
 		
+		if(dirName.startsWith("~"))
+		{
+			String [] args = dirName.split("/");
+			System.out.println(args[0]);
+			// We know we're going to start all the way from the beginning.
+		}
+		else
+		{
+			String [] args = dirName.split("/");
+			for(int i = 0; i < args.length; i++)
+				dirList.addNode(args[i]);
+			
+			File file = new File(dirList.getPath());
+			System.out.println(file.getAbsolutePath());
+			if(file.exists())
+			{
+				
+			}
+			
+			else
+			{
+				System.out.println("Directory not found");
+				String firstNodeAdded = new String(args[0]);
+				dirList.currentDir(firstNodeAdded, true);
+				// If directory is not found, we're going to delete every single node up to the first
+				// argument in the array.
+			}
+		}
+	}
+	@Override
+	public void listDirectoryFiles()
+	{
+		System.out.println(dirList.getPath());
 		Calendar cal = Calendar.getInstance();
 		
-		File folder = new File(this.dirList.buildPath());
+		File folder = new File(dirList.getPath());
 		File [] files = folder.listFiles();
 		for(int i = 0; i < files.length; i++)
 		{
@@ -32,7 +67,6 @@ public class Shell implements ListSegments{
 			String str = String.format("%02d/%02d/%02d\t%02d:%02d:%02d\t%s", month, day, year, hour, minute, second, files[i].getName());
 			System.out.println(str);
 		}
-		
 	}
 	@Override
 	public void listDirectoryFiles(String dir)
@@ -52,7 +86,7 @@ public class Shell implements ListSegments{
 			while(j<args.length)
 				dirList.addNode(args[j++]);
 			
-			String dirName = dirList.buildPath();
+			String dirName = dirList.getPath();
 			System.out.println(dirName);
 			Calendar cal = Calendar.getInstance();
 			
@@ -73,7 +107,7 @@ public class Shell implements ListSegments{
 				System.out.println(str);
 			}
 			
-			dirList.removeNode(currDir);
+			dirList.currentDir(currDir, false);
 		}
 		else if(args[0].equals("."))
 		{

@@ -23,7 +23,7 @@ public class LinkedList {
 			temp = temp.next;
 		}
 	}
-	public String buildPath()
+	public String getPath()
 	{
 		StringBuilder pathName = new StringBuilder();
 		Node temp = root;
@@ -61,21 +61,43 @@ public class LinkedList {
 			temp.next.prev = temp;
 		}
 	}
-	
-	public void removeNode(String currentDirName)
+	/*
+	 * Deletes every single node up until the current node passed in.
+	 * if flag = true, delete every node INCLUDING the node passed in.
+	 * else, delete every node up to, but NOT the node passed in.
+	 */
+	public void currentDir(String currentDirName, boolean flag)
 	{
 		// Remove EVERY node from the end until you reach the dirName
-		Node temp = root;
-		while(temp != null)
+		if(flag) // The root will never be deleted.
 		{
-			if(temp.data.equals(currentDirName))
+			Node temp = root;
+			while(temp.next != null)
 			{
-				temp.next = null;
-				return;
+				if(temp.next.data.equals(currentDirName))
+				{
+					temp.next.prev = null;
+					temp.next = null;
+					return;
+				}
+				else
+					temp = temp.next;
 			}
-			else
+		}
+		else
+		{
+			Node temp = root;
+			while(temp != null)
 			{
-				temp = temp.next;
+				if(temp.data.equals(currentDirName))
+				{
+					temp.next = null;
+					return;
+				}
+				else
+				{
+					temp = temp.next;
+				}
 			}
 		}
 	}
