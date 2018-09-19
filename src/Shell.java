@@ -1,19 +1,29 @@
 import java.io.*;
+import java.util.*;
 import java.util.Calendar;
 
 public class Shell implements ListSegments{
 	
-	private String cwd;
+	private String currWorkingDir;
+	private String prevWorkingDir;
+	public ArrayList<String> dir = new ArrayList();
+	
 	public Shell()
 	{
-		this.cwd = "C:\\Users\\Anson";
+		this.currWorkingDir = "C:\\Users\\Anson";
+		this.prevWorkingDir = "C:\\Users";
+		dir.add("C:");
+		dir.add("Users");
+		dir.add("Anson");
+		System.out.println("Currently in: " + dir.get(0) + "/" + dir.get(1) + "/" + dir.get(2));
+		
 	}
 	@Override
 	public void listDirectoryFiles()
 	{
 		Calendar cal = Calendar.getInstance();
 		
-		File folder = new File(this.cwd);
+		File folder = new File(this.currWorkingDir);
 		File [] files = folder.listFiles();
 		for(int i = 0; i < files.length; i++)
 		{
@@ -69,19 +79,21 @@ public class Shell implements ListSegments{
 				System.out.println(str);
 			} 
 		}
-		else
+		else if(args[0].equals("."))
 		{
-			
+			listDirectoryFiles();
 		}
 			
 	}
 	public void setDir(String dir)
 	{
-		this.cwd = "C:\\Users\\Anson\\" + dir;
+		this.prevWorkingDir = currWorkingDir;
+		this.currWorkingDir = "C:\\Users\\Anson\\" + dir;
+		
 	}
 	public String getCWD()
 	{
-		return this.cwd;
+		return this.currWorkingDir;
 	}
 	
 }
