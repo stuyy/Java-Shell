@@ -11,7 +11,7 @@ public class LinkedList {
 	
 	public boolean isEmpty()
 	{
-		return root == null;
+		return root.next == null;
 	}
 	
 	public void printList()
@@ -34,13 +34,25 @@ public class LinkedList {
 		}
 		return pathName.toString();
 	}
+	public String pathWithoutSlash()
+	{
+		StringBuilder pathName = new StringBuilder();
+		Node temp = root;
+		while(temp != null)
+		{
+			pathName.append(temp.data);
+			temp = temp.next;
+		}
+		return pathName.toString();
+	}
 	public void addNode(String data)
 	{
+		Node temp = root;
 		if(isEmpty())
-			root = new Node(data);
+			temp.next = new Node(data);
 		else
 		{
-			Node temp = root;
+			temp = root;
 			while(temp.next != null)
 			{
 				temp = temp.next;
@@ -50,6 +62,23 @@ public class LinkedList {
 		}
 	}
 	
+	public void removeNode(String currentDirName)
+	{
+		// Remove EVERY node from the end until you reach the dirName
+		Node temp = root;
+		while(temp != null)
+		{
+			if(temp.data.equals(currentDirName))
+			{
+				temp.next = null;
+				return;
+			}
+			else
+			{
+				temp = temp.next;
+			}
+		}
+	}
 	public void popNode()
 	{
 		// Remove the last node. This happens every time we do "cd .. to go back one directory"
@@ -65,6 +94,11 @@ public class LinkedList {
 		temp.prev.next = null;
 		temp.prev = null;
 		temp = null;
+	}
+	
+	public void destroyList()
+	{
+		root.next = null;
 	}
 	
 }

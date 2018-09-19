@@ -4,7 +4,7 @@ import java.util.Calendar;
 import ext.anson.LinkedList;
 public class Shell implements ListSegments{
 	
-	
+	String currDir;
 	LinkedList dirList = new LinkedList();
 	
 	public Shell()
@@ -37,18 +37,23 @@ public class Shell implements ListSegments{
 	@Override
 	public void listDirectoryFiles(String dir)
 	{
+		this.currDir = dirList.pathWithoutSlash();
+		if(currDir.equals("C:")) 
+			System.out.println("YEET");
+		System.out.println("The current working directory is: " + currDir);
 		String args [] = dir.split("/");
 		
 		if(args[0].equals("~"))
 		{
-			int j = 1;
-			StringBuilder dirName = new StringBuilder();
-			dirName.append("C:\\Users\\" + System.getProperty("user.name"));
-			while(j<args.length)
-				dirName.append("\\" + args[j++]);
-		
-			System.out.println(dirName);
+			dirList.addNode("Users");
+			dirList.addNode(System.getProperty("user.name"));
 			
+			int j = 1;
+			while(j<args.length)
+				dirList.addNode(args[j++]);
+			
+			String dirName = dirList.buildPath();
+			System.out.println(dirName);
 			Calendar cal = Calendar.getInstance();
 			
 			
@@ -66,13 +71,24 @@ public class Shell implements ListSegments{
 				//System.out.println(month + "/" + day + "/" + year + "\t " + hour + ":" + minute + ":" + second + "\t" + files[i].getName());
 				String str = String.format("%02d/%02d/%02d\t%02d:%02d:%02d\t%s", month, day, year, hour, minute, second, files[i].getName());
 				System.out.println(str);
-			} 
+			}
+			
+			dirList.removeNode(currDir);
 		}
 		else if(args[0].equals("."))
 		{
 			listDirectoryFiles();
 		}
 			
+	}
+	/**
+	 * previousDir changes the directory back to the previous one after listDirectory.
+	 * @param dir
+	 */
+	
+	public void previousDir(String dir)
+	{
+		
 	}
 	
 }

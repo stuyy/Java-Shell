@@ -25,10 +25,22 @@ public class Main {
 				}
 				else
 				{
-					String command = new String(commandInput.substring(0, 2));
-					String path = new String(commandInput.substring(3));
-					path = modify.removeSpaces(path);
-					shell.listDirectoryFiles(path);
+					if(shell.dirList.isEmpty())
+					{
+						String command = new String(commandInput.substring(0, 2));
+						String path = new String(commandInput.substring(3));
+						path = modify.removeSpaces(path);
+						shell.listDirectoryFiles(path);
+					}
+					else
+					{
+						shell.dirList.destroyList();
+						String command = new String(commandInput.substring(0, 2));
+						String path = new String(commandInput.substring(3));
+						path = modify.removeSpaces(path);
+						shell.listDirectoryFiles(path);
+					}
+					
 				}
 			}
 			else if(commandInput.startsWith("cd"))
@@ -41,12 +53,13 @@ public class Main {
 				{
 					String command = new String(commandInput.substring(0, 2));
 					String dir = new String(commandInput.substring(3));
-					System.setProperty("user.dir", dir);
-					String newDir = System.getProperty("user.dir");
+					// Changing the directory isn't possible, so we will just change the "path"
+					System.out.println("The directory we're trying to change to is: " + dir);
 				}
 			}
 			else if(commandInput.startsWith("pwd"))
 			{
+				System.out.println(shell.dirList.buildPath());
 			}
 		}
 		
