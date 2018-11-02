@@ -16,7 +16,6 @@ public class Shell implements ListSegments, ChangeDirectory {
 	@Override
 	public void changeDirectory(String dirName)
 	{
-		
 		if(dirName.startsWith("~"))
 		{
 			String [] args = dirName.split("/");
